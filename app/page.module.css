@@ -35,13 +35,6 @@
   padding: 0px 12px;
 }
 
-.list {
-  list-style-type: none;
-  margin-top: 1rem;
-}
-
-
-
 @media (prefers-color-scheme: dark) {
   .page {
     --gray-rgb: 255, 255, 255;

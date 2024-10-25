@@ -1,0 +1,16 @@
+.list {
+    list-style-type: none;
+    margin-top: 1rem;
+}
+
+.list li {
+    padding: 6px 0;
+}
+
+.list li:not(:last-child) {
+    border-bottom: solid 1px lightgray;
+}
+
+.list li input {
+    margin-right: 12px;
+}

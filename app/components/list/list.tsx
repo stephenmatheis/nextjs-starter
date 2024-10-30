@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { Todo } from "@/app/types/todos";
 import styles from "./list.module.scss";
 
@@ -7,6 +7,7 @@ type ListProps = {
     handleUpdateTodos: (todos: Todo[]) => void;
     handleDone: (index: number, checked: boolean) => void;
     handleDelete: (index: number) => void;
+    handleRename: (index: number, content: string) => void;
 };
 
 export function List({
@@ -14,7 +15,10 @@ export function List({
     handleUpdateTodos,
     handleDone,
     handleDelete,
+    handleRename,
 }: ListProps) {
+    const [isEditable, setIsEditable] = useState<number | null>(null);
+
     useEffect(() => {
         handleUpdateTodos(
             localStorage.getItem("todos")
@@ -36,7 +40,39 @@ export function List({
                                 handleDone(index, event.target.checked);
                             }}
                         />
-                        <span className={styles.content}>{content}</span>
+                        <span
+                            className={styles.content}
+                            onDoubleClick={() => {
+                                setIsEditable(index);
+                            }}
+                        >
+                            {isEditable == index ? (
+                                <input
+                                    autoFocus
+                                    type="text"
+                                    className={styles.edit}
+                                    defaultValue={content}
+                                    onKeyDown={(
+                                        event: KeyboardEvent<HTMLInputElement>
+                                    ) => {
+                                        if (event.key === "Enter") {
+                                            event.preventDefault();
+
+                                            handleRename(
+                                                index,
+                                                (
+                                                    event.target as HTMLInputElement
+                                                ).value || ""
+                                            );
+
+                                            setIsEditable(null);
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <span className={styles.view}>{content}</span>
+                            )}
+                        </span>
                         <button
                             className={styles.delete}
                             onClick={() => {

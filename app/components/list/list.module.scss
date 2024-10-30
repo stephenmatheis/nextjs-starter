@@ -5,7 +5,7 @@
     .task {
         --margin: 24px;
 
-        padding: 12px 0;
+        padding: 6px 0;
         display: flex;
         justify-content: space-between;
 
@@ -21,10 +21,26 @@
 
         .content {
             flex: 1;
+            user-select: none;
+            padding: 6px 6px;
+
+            .edit {
+                font-size: inherit;
+                font-family: inherit;
+                padding: 6px 6px;
+                border: none;
+                background-color: #eaeaea;
+                border-radius: 10px;
+            }
+
+            .view {
+                display: inline-block;
+                padding: 6px 6px;
+            }
         }
 
         .done {
-            margin-right: var(--margin);
+            margin-right: calc(var(--margin) / 2);
         }
 
         .delete {

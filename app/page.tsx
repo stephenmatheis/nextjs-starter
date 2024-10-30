@@ -46,6 +46,16 @@ export default function Home() {
         [todos]
     );
 
+    const handleRename = useCallback((index: number, content: string) => {
+        setTodos((prev) => {
+            const newTodos = prev.map((todo, i) =>
+                i === index ? { ...todo, content } : todo
+            );
+
+            return newTodos;
+        });
+    }, []);
+
     const handleUpdateTodos = useCallback((todos: Todo[]) => {
         setTodos(todos);
     }, []);
@@ -81,6 +91,7 @@ export default function Home() {
                 handleUpdateTodos={handleUpdateTodos}
                 handleDone={handleDone}
                 handleDelete={handleDelete}
+                handleRename={handleRename}
             />
         </div>
     );

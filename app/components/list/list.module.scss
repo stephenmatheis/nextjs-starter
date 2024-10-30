@@ -1,0 +1,45 @@
+.tasks {
+    list-style-type: none;
+    margin-top: 1rem;
+
+    .task {
+        --margin: 24px;
+
+        padding: 12px 0;
+        display: flex;
+        justify-content: space-between;
+
+        &:not(:last-child) {
+            border-bottom: solid 1px lightgray;
+        }
+
+        &:hover {
+            .delete {
+                opacity: 1;
+            }
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .done {
+            margin-right: var(--margin);
+        }
+
+        .delete {
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: var(--margin);
+            opacity: 0;
+            // transition: opacity 150ms ease-in-out;
+
+            svg {
+                fill: red;
+            }
+        }
+    }
+}

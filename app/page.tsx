@@ -33,6 +33,19 @@ export default function Home() {
         });
     }, []);
 
+    const handleDelete = useCallback(
+        (index: number) => {
+            setTodos(
+                todos.filter((task, idx) => {
+                    if (index !== idx) {
+                        return task;
+                    }
+                })
+            );
+        },
+        [todos]
+    );
+
     const handleUpdateTodos = useCallback((todos: Todo[]) => {
         setTodos(todos);
     }, []);
@@ -67,6 +80,7 @@ export default function Home() {
                 todos={todos}
                 handleUpdateTodos={handleUpdateTodos}
                 handleDone={handleDone}
+                handleDelete={handleDelete}
             />
         </div>
     );

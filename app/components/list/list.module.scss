@@ -1,60 +1,120 @@
-.tasks {
-    list-style-type: none;
-    margin-top: 1rem;
+.list {
+    --margin: 24px;
+    --offset: calc(var(--margin) * 2);
 
-    .task {
-        --margin: 24px;
-
-        padding: 6px 0;
+    .title {
         display: flex;
-        justify-content: space-between;
-
-        &:not(:last-child) {
-            border-bottom: solid 1px lightgray;
-        }
+        align-items: center;
+        position: relative;
+        height: 3rem;
+        margin-top: 2rem;
+        padding-left: calc(60px + var(--offset));
+        transform: translateX(calc(-60px - var(--offset)));
 
         &:hover {
-            .delete {
-                opacity: 1;
+            .toolbar {
+                display: flex;
+                align-items: center;
             }
         }
 
-        .content {
-            flex: 1;
-            user-select: none;
-            padding: 6px 6px;
+        .toolbar {
+            display: none;
+            height: 3rem;
+            position: absolute;
+            top: 0;
+            left: calc(var(--offset));
 
-            .edit {
-                font-size: inherit;
-                font-family: inherit;
-                padding: 6px 6px;
-                border: none;
-                background-color: #eaeaea;
-                border-radius: 10px;
-            }
+            button {
+                width: 60px;
+                flex: 1;
+                color: gray;
+                background: none;
 
-            .view {
-                display: inline-block;
-                padding: 6px 6px;
+                svg {
+                    width: 24px;
+                    height: 24px;
+                }
             }
         }
+    }
 
-        .done {
-            margin-right: calc(var(--margin) / 2);
-        }
+    .tasks {
+        list-style-type: none;
 
-        .delete {
-            background: none;
-            border: none;
+        .task {
+            position: relative;
+            padding: 6px 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: var(--margin);
-            opacity: 0;
-            // transition: opacity 150ms ease-in-out;
+            justify-content: space-between;
 
-            svg {
-                fill: red;
+            &:not(:last-child) {
+                border-bottom: solid 1px lightgray;
+            }
+
+            &:hover {
+                .delete {
+                    opacity: 1;
+                }
+            }
+
+            .content {
+                flex: 1;
+                user-select: none;
+                padding: 6px 6px;
+
+                .edit {
+                    font-size: inherit;
+                    font-family: inherit;
+                    padding: 6px 6px;
+                    border: none;
+                    background-color: #eaeaea;
+                    border-radius: 10px;
+                }
+
+                .view {
+                    display: inline-block;
+                    padding: 6px 6px;
+                }
+            }
+
+            .done {
+                margin-right: calc(var(--margin) / 2);
+            }
+
+            .delete {
+                background: none;
+                border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-left: var(--margin);
+                opacity: 0;
+                // transition: opacity 150ms ease-in-out;
+
+                svg {
+                    fill: red;
+                }
+            }
+
+            .order {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                width: fit-content;
+                position: absolute;
+                top: 0;
+                left: calc(-75px - var(--margin));
+
+                input {
+                    background-color: #eaeaea;
+                    border: none;
+                    width: 75px;
+                    padding: 8px;
+                    text-align: center;
+                    border-radius: 6px;
+                }
             }
         }
     }

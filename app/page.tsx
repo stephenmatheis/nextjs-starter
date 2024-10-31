@@ -56,6 +56,28 @@ export default function Home() {
         });
     }, []);
 
+    const handleReorder = useCallback((oldIndex: number, newIndex: number) => {
+        setTodos((prev) => {
+            const item = prev[oldIndex];
+            const newTodos = prev.filter((_, index) => index !== oldIndex);
+
+            // console.log("Item:", item);
+            // console.log("New list:", [
+            //     ...newTodos.slice(0, newIndex),
+            //     item,
+            //     ...newTodos.slice(newIndex),
+            // ]);
+
+            // return prev;
+
+            return [
+                ...newTodos.slice(0, newIndex),
+                item,
+                ...newTodos.slice(newIndex),
+            ];
+        });
+    }, []);
+
     const handleUpdateTodos = useCallback((todos: Todo[]) => {
         setTodos(todos);
     }, []);
@@ -92,6 +114,7 @@ export default function Home() {
                 handleDone={handleDone}
                 handleDelete={handleDelete}
                 handleRename={handleRename}
+                handleReorder={handleReorder}
             />
         </div>
     );

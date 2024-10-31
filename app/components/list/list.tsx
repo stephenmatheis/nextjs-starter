@@ -8,6 +8,7 @@ type ListProps = {
     handleDone: (index: number, checked: boolean) => void;
     handleDelete: (index: number) => void;
     handleRename: (index: number, content: string) => void;
+    handleReorder: (oldIndex: number, newIndex: number) => void;
 };
 
 export function List({
@@ -16,6 +17,7 @@ export function List({
     handleDone,
     handleDelete,
     handleRename,
+    handleReorder,
 }: ListProps) {
     const [isEditable, setIsEditable] = useState<number | null>(null);
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -50,15 +52,67 @@ export function List({
                     todos.map(({ content, isDone }: Todo, index: number) => (
                         <li key={index} className={styles.task}>
                             {editMode && (
-                                <span className={styles.order}>
-                                    <input
+                                <div className={styles.order}>
+                                    {/* <input
                                         type="number"
                                         value={index + 1}
                                         onChange={(event) => {
-                                            console.log(event.target.value);
+                                            handleReorder(
+                                                index,
+                                                parseInt(event?.target.value) -
+                                                    1
+                                            );
                                         }}
-                                    />
-                                </span>
+                                    /> */}
+                                    <button
+                                        className={styles.up}
+                                        onClick={() => {
+                                            let newIndex = index - 1;
+
+                                            if (newIndex === -1) {
+                                                newIndex = todos.length - 1;
+                                            }
+
+                                            handleReorder(index, newIndex);
+                                        }}
+                                    >
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        className={styles.down}
+                                        onClick={() => {
+                                            let newIndex = index + 1;
+
+                                            if (newIndex > todos.length - 1) {
+                                                newIndex = 0;
+                                            }
+
+                                            handleReorder(index, newIndex);
+
+                                            // console.log(
+                                            //     `Moving down from ${index} to ${
+                                            //         index + 1
+                                            //     }`
+                                            // );
+                                        }}
+                                    >
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             )}
                             <input
                                 type="checkbox"

@@ -1,15 +1,15 @@
 .list {
     --margin: 24px;
     --offset: calc(var(--margin) * 2);
+    background-color: white;
+    padding: 30px 60px;
+    border-radius: 10px;
 
     .title {
         display: flex;
         align-items: center;
-        position: relative;
+        justify-content: space-between;
         height: 3rem;
-        margin-top: 2rem;
-        padding-left: calc(60px + var(--offset));
-        transform: translateX(calc(-60px - var(--offset)));
 
         &:hover {
             .toolbar {
@@ -20,8 +20,6 @@
 
         .toolbar {
             display: none;
-            height: 3rem;
-            position: absolute;
             top: 0;
             left: calc(var(--offset));
 
@@ -90,7 +88,6 @@
                 align-items: center;
                 margin-left: var(--margin);
                 opacity: 0;
-                // transition: opacity 150ms ease-in-out;
 
                 svg {
                     fill: red;
@@ -106,12 +103,12 @@
                 width: fit-content;
                 position: absolute;
                 top: 0;
-                left: calc(var(--offset) * -1);
+                left: -30px;
 
                 .up,
                 .down {
                     background: none;
-                    padding: 3px;
+                    padding: 0px;
 
                     &:hover {
                         background-color: #eaeaea;
@@ -119,6 +116,25 @@
                     }
                 }
             }
+        }
+    }
+
+    .toolbar {
+        display: flex;
+        gap: 12px;
+
+        .field {
+            font-size: inherit;
+            font-family: inherit;
+            padding: 12px 24px;
+            border: none;
+            background-color: #eaeaea;
+            border-radius: 10px;
+        }
+
+        .create {
+            background-color: mediumseagreen;
+            color: white;
         }
     }
 }

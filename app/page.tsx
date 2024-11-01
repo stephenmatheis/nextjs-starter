@@ -27,11 +27,11 @@ type Action =
     | { type: ActionType.ADD_LIST; payload: { name: string } }
     | {
           type: ActionType.RENAME_TASK;
-          payload: { listId: string; index: number; content: string };
+          payload: { listId: string; taskId: string; content: string };
       }
     | {
           type: ActionType.DELETE_TASK;
-          payload: { listId: string; index: number };
+          payload: { listId: string; taskId: string };
       }
     | {
           type: ActionType.ADD_TASK;
@@ -59,6 +59,20 @@ function addTask(listId: string, taskContent: string): Action {
     return {
         type: ActionType.ADD_TASK,
         payload: { listId, taskContent },
+    };
+}
+
+function deleteTask(listId: string, taskId: string): Action {
+    return {
+        type: ActionType.DELETE_TASK,
+        payload: { listId, taskId },
+    };
+}
+
+function renameTask(listId: string, taskId: string, content: string): Action {
+    return {
+        type: ActionType.RENAME_TASK,
+        payload: { listId, taskId, content },
     };
 }
 
@@ -111,6 +125,41 @@ function reducer(state: ListProps[], action: Action): ListProps[] {
                       }
                     : list,
             );
+
+        case ActionType.DELETE_TASK:
+            return state.map((list) => {
+                if (list.id === action.payload.listId) {
+                    return {
+                        ...list,
+                        todos: list.todos.filter(
+                            (task) => task.id !== action.payload.taskId,
+                        ),
+                    };
+                }
+
+                return list;
+            });
+
+        case ActionType.RENAME_TASK:
+            return state.map((list) => {
+                if (list.id === action.payload.listId) {
+                    return {
+                        ...list,
+                        todos: list.todos.map((task) => {
+                            if (task.id === action.payload.taskId) {
+                                return {
+                                    ...task,
+                                    content: action.payload.content,
+                                };
+                            }
+
+                            return task;
+                        }),
+                    };
+                }
+
+                return list;
+            });
 
         case ActionType.TOGGLE_TASK_COMPLETION:
             return state.map((list) =>
@@ -187,8 +236,20 @@ export default function Home() {
         return dispatch(addList(name));
     }
 
-    function handleAddTask(listName: string, taskContent: string) {
-        return dispatch(addTask(listName, taskContent));
+    function handleAddTask(listId: string, taskContent: string) {
+        return dispatch(addTask(listId, taskContent));
+    }
+
+    function handleDeleteTask(listId: string, taskId: string) {
+        return dispatch(deleteTask(listId, taskId));
+    }
+
+    function handleRenameTask(
+        listId: string,
+        taskId: string,
+        taskContent: string,
+    ) {
+        return dispatch(renameTask(listId, taskId, taskContent));
     }
 
     function handleToggleTaskCompletion(listName: string, taskContent: string) {
@@ -196,11 +257,11 @@ export default function Home() {
     }
 
     function handleReorderTasks(
-        listName: string,
+        listId: string,
         fromIndex: number,
         toIndex: number,
     ) {
-        return dispatch(reorderTasks(listName, fromIndex, toIndex));
+        return dispatch(reorderTasks(listId, fromIndex, toIndex));
     }
 
     // function handleReorderLists(fromIndex: number, toIndex: number) {
@@ -212,8 +273,6 @@ export default function Home() {
             localStorage.setItem('lists', JSON.stringify(lists));
         }
     }, [lists]);
-
-    console.log(lists);
 
     return (
         <div className={styles.page}>
@@ -242,6 +301,8 @@ export default function Home() {
                 lists={lists}
                 setListsFromLocalStorage={setListsFromLocalStorage}
                 addTask={handleAddTask}
+                deleteTask={handleDeleteTask}
+                renameTask={handleRenameTask}
                 toggleTaskCompletion={handleToggleTaskCompletion}
                 reorderTasks={handleReorderTasks}
             />

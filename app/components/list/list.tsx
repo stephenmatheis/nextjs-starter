@@ -8,6 +8,8 @@ type ListComponentProps = {
     name: string;
     todos: TodoProps[];
     addTask: (listName: string, taskContent: string) => void;
+    deleteTask: (listId: string, taskId: string) => void;
+    renameTask: (listId: string, taskId: string, content: string) => void;
     toggleTaskCompletion: (listName: string, taskContent: string) => void;
     reorderTasks: (
         listName: string,
@@ -21,8 +23,10 @@ export function List({
     name,
     todos,
     addTask,
+    deleteTask,
+    renameTask,
     toggleTaskCompletion,
-    // reorderTasks,
+    reorderTasks,
 }: ListComponentProps) {
     const [value, setValue] = useState<string>('');
     const [isEditable, setIsEditable] = useState<number | null>(null);
@@ -55,11 +59,17 @@ export function List({
                                         <button
                                             className={styles.up}
                                             onClick={() => {
-                                                // let newIndex = index - 1;
-                                                // if (newIndex === -1) {
-                                                //     newIndex = todos.length - 1;
-                                                // }
-                                                // handleReorder(index, newIndex);
+                                                let newIndex = index - 1;
+
+                                                if (newIndex === -1) {
+                                                    newIndex = todos.length - 1;
+                                                }
+
+                                                reorderTasks(
+                                                    listId,
+                                                    index,
+                                                    newIndex,
+                                                );
                                             }}
                                         >
                                             <svg
@@ -74,14 +84,20 @@ export function List({
                                         <button
                                             className={styles.down}
                                             onClick={() => {
-                                                // let newIndex = index + 1;
-                                                // if (
-                                                //     newIndex >
-                                                //     todos.length - 1
-                                                // ) {
-                                                //     newIndex = 0;
-                                                // }
-                                                // handleReorder(index, newIndex);
+                                                let newIndex = index + 1;
+
+                                                if (
+                                                    newIndex >
+                                                    todos.length - 1
+                                                ) {
+                                                    newIndex = 0;
+                                                }
+
+                                                reorderTasks(
+                                                    listId,
+                                                    index,
+                                                    newIndex,
+                                                );
                                             }}
                                         >
                                             <svg
@@ -115,22 +131,35 @@ export function List({
                                             type="text"
                                             className={styles.edit}
                                             defaultValue={content}
-                                            // onKeyDown={(
-                                            //     event: KeyboardEvent<HTMLInputElement>,
-                                            // ) => {
-                                            //     if (event.key === 'Enter') {
-                                            //         event.preventDefault();
+                                            onKeyDown={(
+                                                event: KeyboardEvent<HTMLInputElement>,
+                                            ) => {
+                                                if (event.key === 'Enter') {
+                                                    event.preventDefault();
 
-                                            //         handleRename(
-                                            //             index,
-                                            //             (
-                                            //                 event.target as HTMLInputElement
-                                            //             ).value || '',
-                                            //         );
+                                                    const value = (
+                                                        event.target as HTMLInputElement
+                                                    ).value;
 
-                                            //         setIsEditable(null);
-                                            //     }
-                                            // }}
+                                                    if (!value) {
+                                                        alert(
+                                                            `Task name can't be empty.`,
+                                                        );
+
+                                                        return;
+                                                    }
+
+                                                    renameTask(
+                                                        listId,
+                                                        id,
+                                                        (
+                                                            event.target as HTMLInputElement
+                                                        ).value || '',
+                                                    );
+
+                                                    setIsEditable(null);
+                                                }
+                                            }}
                                         />
                                     ) : (
                                         <span className={styles.view}>
@@ -141,7 +170,7 @@ export function List({
                                 <button
                                     className={styles.delete}
                                     onClick={() => {
-                                        // handleDelete(index);
+                                        deleteTask(listId, id);
                                     }}
                                 >
                                     <svg
@@ -169,12 +198,16 @@ export function List({
                             event.preventDefault();
 
                             addTask(listId, value);
+                            setValue('');
                         }
                     }}
                 />
                 <button
                     className={styles.create}
-                    onClick={() => addTask(listId, value)}
+                    onClick={() => {
+                        addTask(listId, value);
+                        setValue('');
+                    }}
                 >
                     Add
                 </button>

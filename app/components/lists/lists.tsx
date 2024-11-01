@@ -7,6 +7,8 @@ type ListsProps = {
     lists: ListProps[];
     setListsFromLocalStorage: (storedLists: ListProps[]) => void;
     addTask: (listName: string, taskContent: string) => void;
+    deleteTask: (listId: string, taskId: string) => void;
+    renameTask: (listId: string, taskId: string, content: string) => void;
     toggleTaskCompletion: (listName: string, taskContent: string) => void;
     reorderTasks: (
         listName: string,
@@ -19,6 +21,8 @@ export function Lists({
     lists,
     setListsFromLocalStorage,
     addTask,
+    deleteTask,
+    renameTask,
     toggleTaskCompletion,
     reorderTasks,
 }: ListsProps) {
@@ -41,6 +45,8 @@ export function Lists({
                         name={name}
                         todos={todos}
                         addTask={addTask}
+                        deleteTask={deleteTask}
+                        renameTask={renameTask}
                         toggleTaskCompletion={toggleTaskCompletion}
                         reorderTasks={reorderTasks}
                     />

@@ -10,7 +10,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { Lists } from './components/lists';
 import { ListProps } from './types/todos';
-import styles from './page.module.css';
+import styles from './page.module.scss';
 
 enum ActionType {
     ADD_LIST = 'ADD_LIST',
@@ -276,27 +276,29 @@ export default function Home() {
 
     return (
         <div className={styles.page}>
-            <h1>New list</h1>
-            <div className={styles.toolbar}>
-                <input
-                    type="text"
-                    className={styles.field}
-                    value={value}
-                    onChange={(event) => setValue(event.target.value)}
-                    onKeyDown={(event: KeyboardEvent) => {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            handleAddList(value);
-                        }
-                    }}
-                />
-                <button
-                    className={styles.create}
-                    onClick={() => handleAddList(value)}
-                >
-                    Create
-                </button>
-            </div>
+            <header className={styles.header}>
+                <h1>New list</h1>
+                <div className={styles.toolbar}>
+                    <input
+                        type="text"
+                        className={styles.field}
+                        value={value}
+                        onChange={(event) => setValue(event.target.value)}
+                        onKeyDown={(event: KeyboardEvent) => {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                handleAddList(value);
+                            }
+                        }}
+                    />
+                    <button
+                        className={styles.create}
+                        onClick={() => handleAddList(value)}
+                    >
+                        Create
+                    </button>
+                </div>
+            </header>
             <Lists
                 lists={lists}
                 setListsFromLocalStorage={setListsFromLocalStorage}

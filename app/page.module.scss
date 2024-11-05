@@ -1,0 +1,45 @@
+.page {
+    font-family: var(--font-geist-sans);
+    max-width: 1440px;
+    margin: 0 auto;
+
+    // @media screen and (max-width: 1440px) {
+    //     background-color: red;
+    // }
+
+    // @media screen and (max-width: 1024px) {
+    //     background-color: green;
+    // }
+
+    // @media screen and (max-width: 768px) {
+    //     background-color: blue;
+    // }
+
+    // @media screen and (max-width: 500px) {
+    //     background-color: yellow;
+    // }
+
+    .header {
+        margin-top: 60px;
+        padding-left: 15px;
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+
+            .field {
+                font-size: inherit;
+                font-family: inherit;
+                padding: 12px 24px;
+                border: none;
+                background-color: #eaeaea;
+                border-radius: 10px;
+            }
+
+            .create {
+                background-color: mediumseagreen;
+                color: white;
+            }
+        }
+    }
+}

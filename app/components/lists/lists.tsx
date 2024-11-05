@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ListProps } from '@/app/types/todos';
 import { List } from '../list/list';
 import styles from './lists.module.scss';
+import classNames from 'classnames';
 
 type ListsProps = {
     lists: ListProps[];
@@ -26,6 +27,10 @@ export function Lists({
     toggleTaskCompletion,
     reorderTasks,
 }: ListsProps) {
+    const [layout, setLayout] = useState<'Horizontal' | 'Vertical' | 'Flow'>(
+        'Flow',
+    );
+
     useEffect(() => {
         setListsFromLocalStorage(
             localStorage.getItem('lists')
@@ -35,23 +40,56 @@ export function Lists({
     }, [setListsFromLocalStorage]);
 
     return (
-        <div className={styles.lists}>
-            {lists.map(({ id, name, todos }, index) => {
-                return (
-                    <List
-                        key={id}
-                        listId={id}
-                        index={index}
-                        name={name}
-                        todos={todos}
-                        addTask={addTask}
-                        deleteTask={deleteTask}
-                        renameTask={renameTask}
-                        toggleTaskCompletion={toggleTaskCompletion}
-                        reorderTasks={reorderTasks}
-                    />
-                );
-            })}
-        </div>
+        <main className={styles.main}>
+            <div className={styles.toolbar}>
+                <button
+                    className={classNames({ selected: layout === 'Flow' })}
+                    onClick={() => setLayout('Flow')}
+                >
+                    Flow
+                </button>
+                <button
+                    className={classNames({
+                        selected: layout === 'Horizontal',
+                    })}
+                    onClick={() => setLayout('Horizontal')}
+                >
+                    Horizontal
+                </button>
+                <button
+                    className={classNames({ selected: layout === 'Vertical' })}
+                    onClick={() => setLayout('Vertical')}
+                >
+                    Vertical
+                </button>
+            </div>
+            <div
+                className={classNames(styles.lists, {
+                    [styles.flow]: layout === 'Flow',
+                    [styles.flex]:
+                        layout === 'Horizontal' || layout === 'Vertical',
+                    [styles.horizontal]: layout === 'Horizontal',
+                    [styles.vertical]: layout === 'Vertical',
+                })}
+            >
+                {lists.map(({ id, name, todos }, index) => {
+                    return (
+                        <List
+                            key={id}
+                            layout={layout}
+                            listId={id}
+                            index={index}
+                            name={name}
+                            todos={todos}
+                            addTask={addTask}
+                            deleteTask={deleteTask}
+                            renameTask={renameTask}
+                            toggleTaskCompletion={toggleTaskCompletion}
+                            reorderTasks={reorderTasks}
+                        />
+                    );
+                })}
+            </div>
+        </main>
     );
 }

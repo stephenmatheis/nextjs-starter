@@ -1,140 +1,163 @@
 .list {
     --margin: 24px;
     --offset: calc(var(--margin) * 2);
-    background-color: white;
-    padding: 30px 60px;
-    border-radius: 10px;
 
-    .title {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 3rem;
+    display: inline-flex;
+    padding: 15px;
+    width: 480px;
 
-        &:hover {
-            .toolbar {
-                display: flex;
-                align-items: center;
-            }
-        }
-
-        .toolbar {
-            display: none;
-            top: 0;
-            left: calc(var(--offset));
-
-            button {
-                width: 60px;
-                flex: 1;
-                color: gray;
-                background: none;
-
-                svg {
-                    width: 24px;
-                    height: 24px;
-                }
-            }
-        }
+    &.horizontal {
+        // background-color: red;
     }
 
-    .tasks {
-        list-style-type: none;
+    &.vertical {
+        // background-color: blue;
+    }
 
-        .task {
-            position: relative;
-            padding: 6px 0;
+    &.flow {
+        // background-color: yellow;
+    }
+
+    .card {
+        display: inline-block;
+        background-color: white;
+        border-radius: 28px;
+        padding: 30px;
+        width: 100%;
+        // min-height: 300px;
+
+        .title {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-
-            &:not(:last-child) {
-                border-bottom: solid 1px lightgray;
-            }
+            height: 2rem;
 
             &:hover {
-                .delete {
-                    opacity: 1;
+                .toolbar {
+                    display: flex;
+                    align-items: center;
                 }
             }
 
-            .content {
-                flex: 1;
-                user-select: none;
-                padding: 6px 6px;
-
-                .edit {
-                    font-size: inherit;
-                    font-family: inherit;
-                    padding: 6px 6px;
-                    border: none;
-                    background-color: #eaeaea;
-                    border-radius: 10px;
-                }
-
-                .view {
-                    display: inline-block;
-                    padding: 6px 6px;
-                }
-            }
-
-            .done {
-                margin-right: calc(var(--margin) / 2);
-            }
-
-            .delete {
-                background: none;
-                border: none;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-left: var(--margin);
-                opacity: 0;
-
-                svg {
-                    fill: red;
-                }
-            }
-
-            .order {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                height: 100%;
-                width: fit-content;
-                position: absolute;
+            .toolbar {
+                display: none;
                 top: 0;
-                left: -30px;
+                left: calc(var(--offset));
 
-                .up,
-                .down {
+                button {
+                    width: 60px;
+                    flex: 1;
+                    color: gray;
                     background: none;
-                    padding: 0px;
 
-                    &:hover {
-                        background-color: #eaeaea;
-                        border-radius: 4px;
+                    svg {
+                        width: 24px;
+                        height: 24px;
                     }
                 }
             }
         }
-    }
 
-    .toolbar {
-        display: flex;
-        gap: 12px;
+        .tasks {
+            list-style-type: none;
 
-        .field {
-            font-size: inherit;
-            font-family: inherit;
-            padding: 12px 24px;
-            border: none;
-            background-color: #eaeaea;
-            border-radius: 10px;
+            .task {
+                position: relative;
+                padding: 6px 0;
+                display: flex;
+                justify-content: space-between;
+
+                &:not(:last-child) {
+                    border-bottom: solid 1px lightgray;
+                }
+
+                &:hover {
+                    .delete {
+                        opacity: 1;
+                    }
+                }
+
+                .content {
+                    flex: 1;
+                    user-select: none;
+                    padding: 6px 6px;
+
+                    .edit {
+                        font-size: inherit;
+                        font-family: inherit;
+                        padding: 6px 6px;
+                        border: none;
+                        background-color: #eaeaea;
+                        border-radius: 10px;
+                    }
+
+                    .view {
+                        display: inline-block;
+                        padding: 6px 6px;
+                    }
+                }
+
+                .done {
+                    margin-right: calc(var(--margin) / 2);
+                }
+
+                .delete {
+                    background: none;
+                    border: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-left: var(--margin);
+                    opacity: 0;
+
+                    svg {
+                        fill: red;
+                    }
+                }
+
+                .order {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+                    width: fit-content;
+                    position: absolute;
+                    top: 0;
+                    left: -30px;
+
+                    .up,
+                    .down {
+                        background: none;
+                        padding: 0px;
+
+                        &:hover {
+                            background-color: #eaeaea;
+                            border-radius: 4px;
+                        }
+                    }
+                }
+            }
         }
 
-        .create {
-            background-color: mediumseagreen;
-            color: white;
+        .toolbar {
+            display: flex;
+            gap: 12px;
+
+            .field {
+                font-size: inherit;
+                font-family: inherit;
+                padding: 12px 24px;
+                border: none;
+                background-color: #eaeaea;
+                border-radius: 10px;
+                width: 100%;
+            }
+
+            .create {
+                background-color: mediumseagreen;
+                color: white;
+            }
         }
     }
 }

@@ -47,6 +47,13 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #c1c1c1;
+    color: white;
+
+    &.selected {
+        background-color: royalblue;
+        color: white;
+    }
 }
 
 @media (prefers-color-scheme: dark) {

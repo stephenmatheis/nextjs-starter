@@ -1,6 +1,39 @@
-.lists {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    margin-top: 30px;
+.main {
+    .toolbar {
+        display: flex;
+        margin-top: 30px;
+        gap: 12px;
+        padding-left: 15px;
+    }
+
+    .lists {
+        margin-top: 30px;
+
+        &.flex {
+            display: flex;
+            gap: 24px;
+        }
+
+        &.horizontal {
+            overflow: auto;
+        }
+
+        &.vertical {
+            flex-direction: column;
+        }
+
+        &.flow {
+            column-count: 3;
+            column-gap: 0px;
+            column-width: 460px;
+        }
+
+        @media screen and (max-width: 1100px) {
+            column-count: 2;
+        }
+
+        @media screen and (max-width: 768px) {
+            column-count: 1;
+        }
+    }
 }

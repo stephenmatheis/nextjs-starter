@@ -3,7 +3,7 @@
         display: flex;
         margin-top: 30px;
         gap: 12px;
-        padding-left: 15px;
+        padding: 0 15px;
     }
 
     .lists {
@@ -28,12 +28,38 @@
             column-width: 460px;
         }
 
-        @media screen and (max-width: 1100px) {
-            column-count: 2;
+        @media screen and (max-width: 1440px) {
+            &.flow {
+                column-width: 400px;
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+            &.flow {
+                column-count: 2;
+                column-width: 384px;
+            }
         }
 
         @media screen and (max-width: 768px) {
-            column-count: 1;
+            &.flow {
+                column-count: 1;
+            }
         }
+
+        @media screen and (max-width: 500px) {
+            &.flow {
+                column-count: 1;
+                column-width: 365px;
+            }
+        }
+
+        // @media screen and (max-width: 1100px) {
+        //     column-count: 2;
+        // }
+
+        // @media screen and (max-width: 768px) {
+        //     column-count: 1;
+        // }
     }
 }

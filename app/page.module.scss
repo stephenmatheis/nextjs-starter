@@ -3,25 +3,25 @@
     max-width: 1440px;
     margin: 0 auto;
 
-    // @media screen and (max-width: 1440px) {
-    //     background-color: red;
-    // }
+    @media screen and (max-width: 1440px) {
+        max-width: 1200px;
+    }
 
-    // @media screen and (max-width: 1024px) {
-    //     background-color: green;
-    // }
+    @media screen and (max-width: 1024px) {
+        max-width: 768px;
+    }
 
-    // @media screen and (max-width: 768px) {
-    //     background-color: blue;
-    // }
+    @media screen and (max-width: 768px) {
+        max-width: 480px;
+    }
 
-    // @media screen and (max-width: 500px) {
-    //     background-color: yellow;
-    // }
+    @media screen and (max-width: 500px) {
+        max-width: 365px;
+    }
 
     .header {
         margin-top: 60px;
-        padding-left: 15px;
+        padding: 0 15px;
 
         .toolbar {
             display: flex;
@@ -34,6 +34,7 @@
                 border: none;
                 background-color: #eaeaea;
                 border-radius: 10px;
+                width: 100%;
             }
 
             .create {

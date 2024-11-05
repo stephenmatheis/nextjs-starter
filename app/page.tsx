@@ -277,10 +277,10 @@ export default function Home() {
     return (
         <div className={styles.page}>
             <header className={styles.header}>
-                <h1>New list</h1>
                 <div className={styles.toolbar}>
                     <input
                         type="text"
+                        placeholder="New list"
                         className={styles.field}
                         value={value}
                         onChange={(event) => setValue(event.target.value)}
@@ -308,6 +308,7 @@ export default function Home() {
                 toggleTaskCompletion={handleToggleTaskCompletion}
                 reorderTasks={handleReorderTasks}
             />
+            <footer className={styles.footer}>Footer</footer>
         </div>
     );
 }

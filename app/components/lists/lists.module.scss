@@ -1,14 +1,12 @@
 .main {
     .toolbar {
         display: flex;
-        margin-top: 30px;
+        justify-content: center;
         gap: 12px;
         padding: 0 15px;
     }
 
     .lists {
-        margin-top: 30px;
-
         &.flex {
             display: flex;
             gap: 24px;
@@ -50,7 +48,7 @@
         @media screen and (max-width: 500px) {
             &.flow {
                 column-count: 1;
-                column-width: 365px;
+                column-width: 375px;
             }
         }
 

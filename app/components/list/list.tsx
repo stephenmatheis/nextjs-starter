@@ -41,7 +41,12 @@ export function List({
                 <div className={styles.title}>
                     <h3>{name}</h3>
                     <div className={styles.toolbar}>
-                        <button onClick={() => setEditMode((prev) => !prev)}>
+                        <button
+                            onClick={() => {
+                                console.log('edit mode');
+                                setEditMode((prev) => !prev);
+                            }}
+                        >
                             <svg
                                 width="16"
                                 height="16"

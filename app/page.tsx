@@ -308,7 +308,7 @@ export default function Home() {
                 toggleTaskCompletion={handleToggleTaskCompletion}
                 reorderTasks={handleReorderTasks}
             />
-            <footer className={styles.footer}>Footer</footer>
+            <footer className={styles.footer}></footer>
         </div>
     );
 }

@@ -174,11 +174,12 @@
                     width: fit-content;
                     position: absolute;
                     top: 0;
-                    left: -30px;
+                    left: -22px;
 
                     .up,
                     .down {
                         background: none;
+                        color: black;
                         padding: 0px;
 
                         &:hover {

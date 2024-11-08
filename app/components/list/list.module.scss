@@ -23,16 +23,16 @@
         padding-bottom: 0;
     }
 
-    // &.horizontal {
-    //     // background-color: red;
-    // }
+    &.horizontal {
+        min-width: 480px;
+    }
 
-    // &.vertical {
-    //     // background-color: blue;
-    // }
+    &.vertical {
+        width: 100%;
+    }
 
     // &.flow {
-    //     // background-color: yellow;
+    //     background-color: yellow;
     // }
 
     .card {

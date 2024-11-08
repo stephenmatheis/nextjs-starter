@@ -119,14 +119,29 @@ export function List({
                                             </button>
                                         </div>
                                     )}
-                                    <input
+                                    {/* <input
                                         type="checkbox"
                                         className={styles.done}
                                         checked={isDone}
                                         onChange={() => {
                                             toggleTaskCompletion(listId, id);
                                         }}
-                                    />
+                                    /> */}
+                                    <div className={styles.checkbox}>
+                                        <label className={styles.label}>
+                                            <input
+                                                type="checkbox"
+                                                checked={isDone}
+                                                onChange={() => {
+                                                    toggleTaskCompletion(
+                                                        listId,
+                                                        id,
+                                                    );
+                                                }}
+                                            />
+                                            <span className={styles.check} />
+                                        </label>
+                                    </div>
                                     <span
                                         className={styles.content}
                                         onDoubleClick={() => {

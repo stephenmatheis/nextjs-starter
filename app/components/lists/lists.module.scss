@@ -33,6 +33,12 @@
             }
         }
 
+        @media screen and (max-width: 1200px) {
+            &.flow {
+                column-width: 341px;
+            }
+        }
+
         @media screen and (max-width: 1024px) {
             &.flow {
                 column-count: 2;

@@ -1,17 +1,18 @@
 import { KeyboardEvent, useState } from 'react';
-import { TodoProps } from '@/app/types/todos';
+import { TodoProps, LayoutOptions } from '@/app/types/todos';
 import styles from './list.module.scss';
 import classNames from 'classnames';
 
 type ListComponentProps = {
     index: number;
-    layout: 'Flow' | 'Horizontal' | 'Vertical';
+    layout: LayoutOptions;
     listId: string;
     name: string;
     todos: TodoProps[];
     addTask: (listName: string, taskContent: string) => void;
     deleteTask: (listId: string, taskId: string) => void;
     renameTask: (listId: string, taskId: string, content: string) => void;
+    renameList: (listId: string, content: string) => void;
     toggleTaskCompletion: (listName: string, taskContent: string) => void;
     reorderTasks: (
         listName: string,
@@ -28,18 +29,65 @@ export function List({
     addTask,
     deleteTask,
     renameTask,
+    renameList,
     toggleTaskCompletion,
     reorderTasks,
 }: ListComponentProps) {
     const [value, setValue] = useState<string>('');
-    const [isEditable, setIsEditable] = useState<number | null>(null);
+    const [isTaskEditable, setIsTaskEditable] = useState<number | null>(null);
+    const [isListNameEditable, setIsListNameEditable] =
+        useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
 
     return (
         <div className={classNames(styles.list, styles[layout.toLowerCase()])}>
             <div className={styles.card}>
-                <div className={styles.title}>
-                    <h3>{name}</h3>
+                <div
+                    className={styles.title}
+                    onDoubleClick={() => {
+                        setIsListNameEditable(true);
+                    }}
+                >
+                    {isListNameEditable ? (
+                        <input
+                            autoFocus
+                            type="text"
+                            className={styles.edit}
+                            defaultValue={name}
+                            onKeyDown={(
+                                event: KeyboardEvent<HTMLInputElement>,
+                            ) => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+
+                                    const value = (
+                                        event.target as HTMLInputElement
+                                    ).value;
+
+                                    if (!value) {
+                                        alert(`List name can't be empty.`);
+
+                                        return;
+                                    }
+
+                                    renameList(
+                                        listId,
+                                        (event.target as HTMLInputElement)
+                                            .value || '',
+                                    );
+
+                                    setIsListNameEditable(false);
+                                }
+
+                                if (event.key === 'Escape') {
+                                    event.preventDefault();
+                                    setIsListNameEditable(false);
+                                }
+                            }}
+                        />
+                    ) : (
+                        <h3>{name}</h3>
+                    )}
                     <div className={styles.toolbar}>
                         <button
                             onClick={() => {
@@ -66,6 +114,7 @@ export function List({
                                 index: number,
                             ) => (
                                 <li key={id} className={styles.task}>
+                                    {/* Reorder tasks */}
                                     {editMode && (
                                         <div className={styles.order}>
                                             <button
@@ -124,14 +173,7 @@ export function List({
                                             </button>
                                         </div>
                                     )}
-                                    {/* <input
-                                        type="checkbox"
-                                        className={styles.done}
-                                        checked={isDone}
-                                        onChange={() => {
-                                            toggleTaskCompletion(listId, id);
-                                        }}
-                                    /> */}
+                                    {/* Checkbox */}
                                     <div className={styles.checkbox}>
                                         <label className={styles.label}>
                                             <input
@@ -147,13 +189,14 @@ export function List({
                                             <span className={styles.check} />
                                         </label>
                                     </div>
+                                    {/* Task name */}
                                     <span
                                         className={styles.content}
                                         onDoubleClick={() => {
-                                            setIsEditable(index);
+                                            setIsTaskEditable(index);
                                         }}
                                     >
-                                        {isEditable == index ? (
+                                        {isTaskEditable == index ? (
                                             <input
                                                 autoFocus
                                                 type="text"
@@ -185,7 +228,14 @@ export function List({
                                                             ).value || '',
                                                         );
 
-                                                        setIsEditable(null);
+                                                        setIsTaskEditable(null);
+                                                    }
+
+                                                    if (
+                                                        event.key === 'Escape'
+                                                    ) {
+                                                        event.preventDefault();
+                                                        setIsTaskEditable(null);
                                                     }
                                                 }}
                                             />
@@ -215,7 +265,7 @@ export function List({
                             ),
                         )}
                 </ul>
-                <div className={styles.toolbar}>
+                <div className={styles.newtask}>
                     <input
                         type="text"
                         className={styles.field}

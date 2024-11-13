@@ -14,8 +14,9 @@ import styles from './page.module.scss';
 
 enum ActionType {
     ADD_LIST = 'ADD_LIST',
+    RENAME_LIST = 'RENAME_LIST',
     ADD_TASK = 'ADD_TASK',
-    RENAME_TASK = 'RENAME_LIST',
+    RENAME_TASK = 'RENAME_TASK',
     DELETE_TASK = 'DELETE TASK',
     TOGGLE_TASK_COMPLETION = 'TOGGLE_TASK_COMPLETION',
     REORDER_TASKS = 'REORDER_TASKS',
@@ -25,6 +26,10 @@ enum ActionType {
 
 type Action =
     | { type: ActionType.ADD_LIST; payload: { name: string } }
+    | {
+          type: ActionType.RENAME_LIST;
+          payload: { listId: string; content: string };
+      }
     | {
           type: ActionType.RENAME_TASK;
           payload: { listId: string; taskId: string; content: string };
@@ -73,6 +78,13 @@ function renameTask(listId: string, taskId: string, content: string): Action {
     return {
         type: ActionType.RENAME_TASK,
         payload: { listId, taskId, content },
+    };
+}
+
+function renameList(listId: string, content: string): Action {
+    return {
+        type: ActionType.RENAME_LIST,
+        payload: { listId, content },
     };
 }
 
@@ -155,6 +167,18 @@ function reducer(state: ListProps[], action: Action): ListProps[] {
 
                             return task;
                         }),
+                    };
+                }
+
+                return list;
+            });
+
+        case ActionType.RENAME_LIST:
+            return state.map((list) => {
+                if (list.id === action.payload.listId) {
+                    return {
+                        ...list,
+                        name: action.payload.content,
                     };
                 }
 
@@ -252,6 +276,10 @@ export default function Home() {
         return dispatch(renameTask(listId, taskId, taskContent));
     }
 
+    function handleRenameList(listId: string, taskContent: string) {
+        return dispatch(renameList(listId, taskContent));
+    }
+
     function handleToggleTaskCompletion(listName: string, taskContent: string) {
         return dispatch(toggleTaskCompletion(listName, taskContent));
     }
@@ -305,6 +333,7 @@ export default function Home() {
                 addTask={handleAddTask}
                 deleteTask={handleDeleteTask}
                 renameTask={handleRenameTask}
+                renameList={handleRenameList}
                 toggleTaskCompletion={handleToggleTaskCompletion}
                 reorderTasks={handleReorderTasks}
             />

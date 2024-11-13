@@ -43,6 +43,7 @@
         border-radius: 28px;
         padding: 30px;
         width: 100%;
+        // box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
         .title {
             display: flex;
@@ -52,19 +53,37 @@
 
             &:hover {
                 .toolbar {
-                    display: flex;
-                    align-items: center;
+                    opacity: 1;
+                }
+            }
+
+            h3 {
+                flex: 1;
+                padding: 6px 6px;
+            }
+
+            input {
+                &.edit {
+                    flex: 1;
+                    font-size: inherit;
+                    font-family: inherit;
+                    padding: 6px 6px;
+                    border: none;
+                    background-color: #eaeaea;
+                    border-radius: 10px;
+
+                    font-size: 1.17em;
+                    font-weight: bold;
                 }
             }
 
             .toolbar {
-                display: none;
-                top: 0;
-                left: calc(var(--offset));
+                display: flex;
+                align-items: center;
+                opacity: 0;
 
                 button {
-                    width: 60px;
-                    flex: 1;
+                    width: 44px;
                     color: gray;
                     background: none;
 
@@ -193,7 +212,7 @@
             }
         }
 
-        .toolbar {
+        .newtask {
             display: flex;
             gap: 12px;
 

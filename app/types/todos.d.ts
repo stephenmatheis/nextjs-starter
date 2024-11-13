@@ -9,3 +9,5 @@ export type ListProps = {
     name: string;
     todos: TodoProps[];
 };
+
+export type LayoutOptions = 'Horizontal' | 'Vertical' | 'Flow' | '';

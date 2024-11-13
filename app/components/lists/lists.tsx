@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { ListProps } from '@/app/types/todos';
+import { ListProps, LayoutOptions } from '@/app/types/todos';
 import { List } from '../list/list';
 import styles from './lists.module.scss';
 import classNames from 'classnames';
@@ -10,6 +12,7 @@ type ListsProps = {
     addTask: (listName: string, taskContent: string) => void;
     deleteTask: (listId: string, taskId: string) => void;
     renameTask: (listId: string, taskId: string, content: string) => void;
+    renameList: (listId: string, content: string) => void;
     toggleTaskCompletion: (listName: string, taskContent: string) => void;
     reorderTasks: (
         listName: string,
@@ -24,12 +27,17 @@ export function Lists({
     addTask,
     deleteTask,
     renameTask,
+    renameList,
     toggleTaskCompletion,
     reorderTasks,
 }: ListsProps) {
-    const [layout, setLayout] = useState<'Horizontal' | 'Vertical' | 'Flow'>(
-        'Flow',
-    );
+    const [layout, setLayout] = useState<LayoutOptions>('');
+
+    function handleLayout(layout: LayoutOptions) {
+        setLayout(layout);
+
+        localStorage.setItem('layout', layout);
+    }
 
     useEffect(() => {
         setListsFromLocalStorage(
@@ -39,12 +47,18 @@ export function Lists({
         );
     }, [setListsFromLocalStorage]);
 
+    useEffect(() => {
+        handleLayout(
+            (localStorage.getItem('layout') as LayoutOptions) || 'Flow',
+        );
+    }, []);
+
     return (
         <main className={styles.main}>
             <div className={styles.toolbar}>
                 <button
                     className={classNames({ selected: layout === 'Flow' })}
-                    onClick={() => setLayout('Flow')}
+                    onClick={() => handleLayout('Flow')}
                 >
                     Flow
                 </button>
@@ -52,13 +66,13 @@ export function Lists({
                     className={classNames({
                         selected: layout === 'Horizontal',
                     })}
-                    onClick={() => setLayout('Horizontal')}
+                    onClick={() => handleLayout('Horizontal')}
                 >
                     Horizontal
                 </button>
                 <button
                     className={classNames({ selected: layout === 'Vertical' })}
-                    onClick={() => setLayout('Vertical')}
+                    onClick={() => handleLayout('Vertical')}
                 >
                     Vertical
                 </button>
@@ -84,6 +98,7 @@ export function Lists({
                             addTask={addTask}
                             deleteTask={deleteTask}
                             renameTask={renameTask}
+                            renameList={renameList}
                             toggleTaskCompletion={toggleTaskCompletion}
                             reorderTasks={reorderTasks}
                         />

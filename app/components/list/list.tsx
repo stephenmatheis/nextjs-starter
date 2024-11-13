@@ -1,4 +1,4 @@
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { TodoProps, LayoutOptions } from '@/app/types/todos';
 import styles from './list.module.scss';
 import classNames from 'classnames';
@@ -38,6 +38,52 @@ export function List({
     const [isListNameEditable, setIsListNameEditable] =
         useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
+    const editTaskRef = useRef<HTMLInputElement>(null);
+    const editListNameRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (!editListNameRef.current) return;
+
+        if (isListNameEditable) {
+            window.addEventListener('click', resetEdit);
+        }
+
+        function resetEdit(event: MouseEvent) {
+            if (
+                !editListNameRef.current?.contains(
+                    event.target as HTMLInputElement,
+                )
+            ) {
+                setIsListNameEditable(false);
+                setIsTaskEditable(null);
+            }
+        }
+
+        return () => {
+            window.removeEventListener('click', resetEdit);
+        };
+    }, [isListNameEditable, editListNameRef]);
+
+    useEffect(() => {
+        if (!editTaskRef.current) return;
+
+        if (isTaskEditable !== null) {
+            window.addEventListener('click', resetEdit);
+        }
+
+        function resetEdit(event: MouseEvent) {
+            if (
+                !editTaskRef.current?.contains(event.target as HTMLInputElement)
+            ) {
+                setIsListNameEditable(false);
+                setIsTaskEditable(null);
+            }
+        }
+
+        return () => {
+            window.removeEventListener('click', resetEdit);
+        };
+    }, [isTaskEditable, editTaskRef]);
 
     return (
         <div className={classNames(styles.list, styles[layout.toLowerCase()])}>
@@ -50,6 +96,7 @@ export function List({
                 >
                     {isListNameEditable ? (
                         <input
+                            ref={editListNameRef}
                             autoFocus
                             type="text"
                             className={styles.edit}
@@ -198,6 +245,7 @@ export function List({
                                     >
                                         {isTaskEditable == index ? (
                                             <input
+                                                ref={editTaskRef}
                                                 autoFocus
                                                 type="text"
                                                 className={styles.edit}

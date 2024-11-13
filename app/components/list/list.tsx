@@ -40,6 +40,7 @@ export function List({
     const [editMode, setEditMode] = useState<boolean>(false);
     const editTaskRef = useRef<HTMLInputElement>(null);
     const editListNameRef = useRef<HTMLInputElement>(null);
+    const [showMenu, setShowMenu] = useState<boolean>(false);
 
     useEffect(() => {
         if (!editListNameRef.current) return;
@@ -138,8 +139,10 @@ export function List({
                     <div className={styles.toolbar}>
                         <button
                             onClick={() => {
-                                console.log('edit mode');
-                                setEditMode((prev) => !prev);
+                                // console.log('edit mode');
+                                // setEditMode((prev) => !prev);
+
+                                setShowMenu((prev) => !prev);
                             }}
                         >
                             <svg
@@ -151,6 +154,46 @@ export function List({
                                 <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
                             </svg>
                         </button>
+                        {showMenu && (
+                            <div
+                                className={styles.menu}
+                                // onClick={() => setShowMenu(false)}
+                            >
+                                <ul className={styles.options}>
+                                    <li
+                                        className={styles.option}
+                                        onClick={() => {
+                                            setIsListNameEditable(true);
+                                            // setShowMenu(false);
+                                        }}
+                                    >
+                                        Rename list
+                                    </li>
+                                    <li
+                                        className={styles.option}
+                                        onClick={() => {
+                                            setEditMode(true);
+                                            // setShowMenu(false);
+                                        }}
+                                    >
+                                        Reorder items
+                                    </li>
+                                    <hr />
+                                    <li
+                                        className={classNames(
+                                            styles.option,
+                                            styles.red,
+                                        )}
+                                        onClick={() => {
+                                            alert('Delete me!');
+                                            // setShowMenu(false);
+                                        }}
+                                    >
+                                        Delete list
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <ul className={styles.tasks}>

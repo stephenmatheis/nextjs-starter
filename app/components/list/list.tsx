@@ -37,7 +37,7 @@ export function List({
     const [isTaskEditable, setIsTaskEditable] = useState<number | null>(null);
     const [isListNameEditable, setIsListNameEditable] =
         useState<boolean>(false);
-    const [editMode, setEditMode] = useState<boolean>(false);
+    const [reorder, setReorder] = useState<boolean>(false);
     const editTaskRef = useRef<HTMLInputElement>(null);
     const editListNameRef = useRef<HTMLInputElement>(null);
     const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -46,10 +46,13 @@ export function List({
         if (!editListNameRef.current) return;
 
         if (isListNameEditable) {
+            console.log('Added window event');
             window.addEventListener('click', resetEdit);
         }
 
         function resetEdit(event: MouseEvent) {
+            console.log('Fired window event');
+
             if (
                 !editListNameRef.current?.contains(
                     event.target as HTMLInputElement,
@@ -137,44 +140,50 @@ export function List({
                         <h3>{name}</h3>
                     )}
                     <div className={styles.toolbar}>
-                        <button
-                            onClick={() => {
-                                // console.log('edit mode');
-                                // setEditMode((prev) => !prev);
-
-                                setShowMenu((prev) => !prev);
-                            }}
-                        >
-                            <svg
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                viewBox="0 0 16 16"
+                        {reorder ? (
+                            <button
+                                className="selected"
+                                onClick={() => setReorder(false)}
                             >
-                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
-                            </svg>
-                        </button>
+                                Save
+                            </button>
+                        ) : (
+                            <button
+                                className={styles['menu-btn']}
+                                onClick={() => setShowMenu((prev) => !prev)}
+                            >
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
+                                </svg>
+                            </button>
+                        )}
                         {showMenu && (
-                            <div
-                                className={styles.menu}
-                                // onClick={() => setShowMenu(false)}
-                            >
-                                <ul className={styles.options}>
+                            <div className={styles.menu}>
+                                <ul
+                                    className={styles.options}
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+
+                                        setShowMenu(false);
+                                    }}
+                                >
                                     <li
                                         className={styles.option}
                                         onClick={() => {
                                             setIsListNameEditable(true);
-                                            // setShowMenu(false);
                                         }}
                                     >
                                         Rename list
                                     </li>
                                     <li
                                         className={styles.option}
-                                        onClick={() => {
-                                            setEditMode(true);
-                                            // setShowMenu(false);
-                                        }}
+                                        onClick={() => setReorder(true)}
                                     >
                                         Reorder items
                                     </li>
@@ -185,8 +194,7 @@ export function List({
                                             styles.red,
                                         )}
                                         onClick={() => {
-                                            alert('Delete me!');
-                                            // setShowMenu(false);
+                                            console.log('Delete');
                                         }}
                                     >
                                         Delete list
@@ -205,7 +213,7 @@ export function List({
                             ) => (
                                 <li key={id} className={styles.task}>
                                     {/* Reorder tasks */}
-                                    {editMode && (
+                                    {reorder && (
                                         <div className={styles.order}>
                                             <button
                                                 className={styles.up}

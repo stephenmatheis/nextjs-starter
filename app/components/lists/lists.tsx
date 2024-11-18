@@ -34,6 +34,11 @@ export function Lists({
     reorderTasks,
 }: ListsProps) {
     const [layout, setLayout] = useState<LayoutOptions>('');
+    const [openMenuId, setOpenMenuId] = useState<string>('');
+
+    function handleOpenMenuId(value: string) {
+        setOpenMenuId(value);
+    }
 
     function handleLayout(layout: LayoutOptions) {
         setLayout(layout);
@@ -104,6 +109,8 @@ export function Lists({
                             renameList={renameList}
                             toggleTaskCompletion={toggleTaskCompletion}
                             reorderTasks={reorderTasks}
+                            showMenu={id === openMenuId ? true : false}
+                            onMenuOpen={handleOpenMenuId}
                         />
                     );
                 })}

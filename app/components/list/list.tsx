@@ -20,6 +20,8 @@ type ListComponentProps = {
         fromIndex: number,
         toIndex: number,
     ) => void;
+    onMenuOpen: (value: string) => void;
+    showMenu: boolean;
 };
 
 export function List({
@@ -34,6 +36,8 @@ export function List({
     renameList,
     toggleTaskCompletion,
     reorderTasks,
+    onMenuOpen,
+    showMenu,
 }: ListComponentProps) {
     const [value, setValue] = useState<string>('');
     const [isTaskEditable, setIsTaskEditable] = useState<number | null>(null);
@@ -42,7 +46,7 @@ export function List({
     const [reorder, setReorder] = useState<boolean>(false);
     const editTaskRef = useRef<HTMLInputElement>(null);
     const editListNameRef = useRef<HTMLInputElement>(null);
-    const [showMenu, setShowMenu] = useState<boolean>(false);
+    // const [showMenu, setShowMenu] = useState<boolean>(false);
 
     useEffect(() => {
         if (!editListNameRef.current) return;
@@ -96,9 +100,9 @@ export function List({
             <div className={styles.card}>
                 <div
                     className={styles.title}
-                    onDoubleClick={() => {
-                        setIsListNameEditable(true);
-                    }}
+                    // onDoubleClick={() => {
+                    //     setIsListNameEditable(true);
+                    // }}
                 >
                     {isListNameEditable ? (
                         <input
@@ -139,7 +143,13 @@ export function List({
                             }}
                         />
                     ) : (
-                        <h3>{name}</h3>
+                        <h3
+                            onDoubleClick={() => {
+                                setIsListNameEditable(true);
+                            }}
+                        >
+                            {name}
+                        </h3>
                     )}
                     <div className={styles.toolbar}>
                         {reorder ? (
@@ -152,7 +162,20 @@ export function List({
                         ) : (
                             <button
                                 className={styles['menu-btn']}
-                                onClick={() => setShowMenu((prev) => !prev)}
+                                onClick={() => {
+                                    // Opening menu
+                                    onMenuOpen(showMenu ? '' : listId);
+
+                                    // setShowMenu((prev) => {
+                                    //     if (prev) {
+                                    //         return false;
+                                    //     } else {
+                                    //         // Opening menu
+                                    //         onMenuOpen(listId);
+                                    //         return true;
+                                    //     }
+                                    // })
+                                }}
                             >
                                 <svg
                                     width="16"
@@ -172,7 +195,8 @@ export function List({
                                         event.preventDefault();
                                         event.stopPropagation();
 
-                                        setShowMenu(false);
+                                        // setShowMenu(false);
+                                        onMenuOpen('');
                                     }}
                                 >
                                     <li

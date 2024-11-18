@@ -12,6 +12,7 @@ type ListComponentProps = {
     addTask: (listName: string, taskContent: string) => void;
     deleteTask: (listId: string, taskId: string) => void;
     renameTask: (listId: string, taskId: string, content: string) => void;
+    deleteList: (listId: string) => void;
     renameList: (listId: string, content: string) => void;
     toggleTaskCompletion: (listName: string, taskContent: string) => void;
     reorderTasks: (
@@ -29,6 +30,7 @@ export function List({
     addTask,
     deleteTask,
     renameTask,
+    deleteList,
     renameList,
     toggleTaskCompletion,
     reorderTasks,
@@ -194,7 +196,7 @@ export function List({
                                             styles.red,
                                         )}
                                         onClick={() => {
-                                            console.log('Delete');
+                                            deleteList(listId);
                                         }}
                                     >
                                         Delete list

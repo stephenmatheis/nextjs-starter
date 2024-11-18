@@ -15,6 +15,7 @@ import styles from './page.module.scss';
 enum ActionType {
     ADD_LIST = 'ADD_LIST',
     RENAME_LIST = 'RENAME_LIST',
+    DELETE_LIST = 'DELETE LIST',
     ADD_TASK = 'ADD_TASK',
     RENAME_TASK = 'RENAME_TASK',
     DELETE_TASK = 'DELETE TASK',
@@ -33,6 +34,10 @@ type Action =
     | {
           type: ActionType.RENAME_TASK;
           payload: { listId: string; taskId: string; content: string };
+      }
+    | {
+          type: ActionType.DELETE_LIST;
+          payload: { listId: string };
       }
     | {
           type: ActionType.DELETE_TASK;
@@ -88,6 +93,13 @@ function renameList(listId: string, content: string): Action {
     };
 }
 
+function deleteList(listId: string): Action {
+    return {
+        type: ActionType.DELETE_LIST,
+        payload: { listId },
+    };
+}
+
 function toggleTaskCompletion(listId: string, id: string): Action {
     return {
         type: ActionType.TOGGLE_TASK_COMPLETION,
@@ -115,12 +127,7 @@ function reorderTasks(
 
 function reducer(state: ListProps[], action: Action): ListProps[] {
     switch (action.type) {
-        case ActionType.ADD_LIST:
-            return [
-                ...state,
-                { id: uuidv4(), name: action.payload.name, todos: [] },
-            ];
-
+        // Task Actions
         case ActionType.ADD_TASK:
             return state.map((list) =>
                 list.id === action.payload.listId
@@ -172,6 +179,16 @@ function reducer(state: ListProps[], action: Action): ListProps[] {
 
                 return list;
             });
+
+        // List Actions
+        case ActionType.ADD_LIST:
+            return [
+                ...state,
+                { id: uuidv4(), name: action.payload.name, todos: [] },
+            ];
+
+        case ActionType.DELETE_LIST:
+            return state.filter((list) => list.id !== action.payload.listId);
 
         case ActionType.RENAME_LIST:
             return state.map((list) => {
@@ -254,12 +271,7 @@ export default function Home() {
         });
     }, []);
 
-    function handleAddList(name: string) {
-        setValue('');
-
-        return dispatch(addList(name));
-    }
-
+    // Task handlers
     function handleAddTask(listId: string, taskContent: string) {
         return dispatch(addTask(listId, taskContent));
     }
@@ -276,10 +288,6 @@ export default function Home() {
         return dispatch(renameTask(listId, taskId, taskContent));
     }
 
-    function handleRenameList(listId: string, taskContent: string) {
-        return dispatch(renameList(listId, taskContent));
-    }
-
     function handleToggleTaskCompletion(listName: string, taskContent: string) {
         return dispatch(toggleTaskCompletion(listName, taskContent));
     }
@@ -290,6 +298,21 @@ export default function Home() {
         toIndex: number,
     ) {
         return dispatch(reorderTasks(listId, fromIndex, toIndex));
+    }
+
+    // List handlers
+    function handleAddList(name: string) {
+        setValue('');
+
+        return dispatch(addList(name));
+    }
+
+    function handleDeleteList(listId: string) {
+        return dispatch(deleteList(listId));
+    }
+
+    function handleRenameList(listId: string, taskContent: string) {
+        return dispatch(renameList(listId, taskContent));
     }
 
     // function handleReorderLists(fromIndex: number, toIndex: number) {
@@ -333,6 +356,7 @@ export default function Home() {
                 addTask={handleAddTask}
                 deleteTask={handleDeleteTask}
                 renameTask={handleRenameTask}
+                deleteList={handleDeleteList}
                 renameList={handleRenameList}
                 toggleTaskCompletion={handleToggleTaskCompletion}
                 reorderTasks={handleReorderTasks}

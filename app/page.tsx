@@ -8,8 +8,11 @@ import {
     useCallback,
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Lists } from './components/lists';
-import { ListProps } from './types/todos';
+import { Lists } from '@/components/lists';
+import { ListProps } from '@/types/todos';
+import ConnectSupabaseSteps from '@/components/tutorial/connect-supabase-steps';
+import SignUpUserSteps from '@/components/tutorial/sign-up-user-steps';
+import { hasEnvVars } from '@/utils/supabase/check-env-vars';
 import styles from './page.module.scss';
 
 enum ActionType {
@@ -361,7 +364,9 @@ export default function Home() {
                 toggleTaskCompletion={handleToggleTaskCompletion}
                 reorderTasks={handleReorderTasks}
             />
-            <footer className={styles.footer}></footer>
+            <footer className={styles.footer}>
+                {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
+            </footer>
         </div>
     );
 }

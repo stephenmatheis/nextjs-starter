@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ListProps, LayoutOptions } from '@/app/types/todos';
-import { List } from '../list/list';
+import { ListProps, LayoutOptions } from '@/types/todos';
+import { List } from '@/components/list';
 import styles from './lists.module.scss';
 import classNames from 'classnames';
 

@@ -1,5 +1,5 @@
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { TodoProps, LayoutOptions } from '@/app/types/todos';
+import { TodoProps, LayoutOptions } from '@/types/todos';
 import styles from './list.module.scss';
 import classNames from 'classnames';
 

@@ -46,7 +46,28 @@ export function List({
     const [reorder, setReorder] = useState<boolean>(false);
     const editTaskRef = useRef<HTMLInputElement>(null);
     const editListNameRef = useRef<HTMLInputElement>(null);
-    // const [showMenu, setShowMenu] = useState<boolean>(false);
+    const menuRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        if (!menuRef.current) return;
+
+        if (showMenu) {
+            console.log('Added window event');
+            window.addEventListener('click', resetEdit);
+        }
+
+        function resetEdit(event: MouseEvent) {
+            console.log('Fired window event');
+
+            if (!menuRef.current?.contains(event.target as HTMLInputElement)) {
+                onMenuOpen('');
+            }
+        }
+
+        return () => {
+            window.removeEventListener('click', resetEdit);
+        };
+    }, [onMenuOpen, showMenu]);
 
     useEffect(() => {
         if (!editListNameRef.current) return;
@@ -65,14 +86,13 @@ export function List({
                 )
             ) {
                 setIsListNameEditable(false);
-                setIsTaskEditable(null);
             }
         }
 
         return () => {
             window.removeEventListener('click', resetEdit);
         };
-    }, [isListNameEditable, editListNameRef]);
+    }, [isListNameEditable, onMenuOpen]);
 
     useEffect(() => {
         if (!editTaskRef.current) return;
@@ -85,7 +105,6 @@ export function List({
             if (
                 !editTaskRef.current?.contains(event.target as HTMLInputElement)
             ) {
-                setIsListNameEditable(false);
                 setIsTaskEditable(null);
             }
         }
@@ -98,12 +117,7 @@ export function List({
     return (
         <div className={classNames(styles.list, styles[layout.toLowerCase()])}>
             <div className={styles.card}>
-                <div
-                    className={styles.title}
-                    // onDoubleClick={() => {
-                    //     setIsListNameEditable(true);
-                    // }}
-                >
+                <div className={styles.title}>
                     {isListNameEditable ? (
                         <input
                             ref={editListNameRef}
@@ -176,6 +190,7 @@ export function List({
                                     //     }
                                     // })
                                 }}
+                                ref={menuRef}
                             >
                                 <svg
                                     width="16"

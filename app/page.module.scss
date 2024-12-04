@@ -1,4 +1,6 @@
 .page {
+    --header-height: 50px;
+
     font-family: var(--font-geist-sans);
     max-width: 1440px;
     margin: 0 auto;
@@ -24,7 +26,67 @@
     }
 
     .header {
-        margin-top: 60px;
+        --color: white;
+        --bg: black;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 30px;
+        position: fixed;
+        width: 100%;
+        height: var(--header-height);
+        left: 0;
+        top: 0;
+        background-color: var(--bg);
+        z-index: 1000;
+
+        h1 {
+            color: var(--color);
+        }
+
+        .avatar {
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+            width: 44px;
+            border-radius: 50%;
+
+            &:hover {
+                &::before {
+                    background-color: royalblue;
+                }
+
+                svg {
+                    fill: var(--color);
+                }
+            }
+
+            &::before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                content: '';
+                height: 32px;
+                width: 32px;
+                background-color: white;
+                border-radius: 50%;
+                z-index: -1;
+            }
+
+            svg {
+                fill: var(--bg);
+                width: 22px;
+                height: 22px;
+            }
+        }
+    }
+
+    .toolbar-wrapper {
+        margin-top: calc(var(--header-height) + 30px);
         margin-bottom: 30px;
         padding: 0 15px;
 
